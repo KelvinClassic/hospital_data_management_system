@@ -1,0 +1,113 @@
+---
+Staff (StaffId, StaffFirstName, StaffLastName, StaffDOB, StaffGender, StaffRole, StaffTelNo, StaffEmail)
+
+Primary Key StaffId
+---
+
+---
+Doctor (DoctorId, Specialization)
+
+Primary Key DoctorId
+Foreign Key DoctorId references Staff (StaffId)
+---
+
+---
+AdminStaff (AdminId, UserName)
+
+Primary Key AdminId
+Foreign Key AdminId references Staff (StaffId)
+---
+
+---
+Room (RoomId, RoomType)
+
+Primary Key RoomId
+---
+
+---
+Shift (ShiftId, CreatedBy, ShiftDate, StartTime, EndTime, ShiftType, WeekNo, ShiftDayOfWeek)
+
+Primary Key ShiftId
+Foreign Key CreatedBy references AdminStaff (AdminId)
+---
+
+---
+ShiftAssignment (AssignmentId, ShiftId, StaffId)
+
+Primary Key AssignmentId
+Foreign Key StaffId references Staff (StaffId)
+Foreign Key ShiftId references Shift (ShiftId)
+---
+
+---
+Patient (PatientId, PatientFirstName, PatientLastName, PatientTelNo, PatientEmail, PatientType, PatientGender)
+
+Primary Key PatientId
+---
+
+---
+Appointment (AppointmentId, DoctorId, PatientId, ScheduledBy, AppointmentDate, AppointmentStartTime, AppointmentEndTime, AppointmentStatus)
+
+Primary Key AppointmentId
+Foreign Key DoctorId references Doctor (DoctorId)
+Foreign Key PatientId references Patient (PatientId)
+Foreign Key ScheduledBy references AdminStaff (AdminId)
+---
+
+---
+MedicalTest (TestId, RequestedBy, DoneBy, PatientId, TestType, TestDate, TestResult, TestStatus, TestCost)
+
+Primary key TestId
+Foreign Key RequestedBy references Doctor (DoctorId)
+Foreign Key DoneBy references Staff (StaffId)
+Foreign Key PatientId references Patient (PatientId)
+---
+
+---
+Treatment (TreatmentId, PatientId, TreatmentProcedure, Medication, TreatmentCost)
+
+Primary key TreatmentId
+Foreign Key PatientId references Patient (PatientId)
+---
+
+---
+Admission (AdmissionId, PatientId, AdmissionDate, TreatmentId, RoomId, AdmissionStatus)
+
+Primary Key AdmissionId
+Foreign Key PatientId references Patient (PatientId)
+Foreign Key TreatmentId references Treatment (TreatmentId)
+Foreign Key RoomId references Room (RoomId)
+---
+
+---
+Invoice (InvoiceNo, DateGenerated, GeneratedBy, PatientId, TreatmentId, Amount, Tax, TotalAmount)
+
+Primary key InvoiceNo
+Foreign Key GeneratedBy references AdminStaff (AdminId)
+Foreign Key TreatmentId references Treatment (TreatmentId)
+Foreign Key PatientId references Patient (PatientId)
+---
+
+---
+TreatmentInvoice (InvoiceNo, TreatmentId)
+
+Primary key InvoiceNo, TreatmentId
+Foreign Key InvoiceNo references Invoice (InvoiceNo)
+Foreign Key TreatmentId references Treatment (TreatmentId)
+---
+
+---
+MedicalTestInvoice (InvoiceNo, TestId)
+
+Primary key InvoiceNo, TreatmentId
+Foreign Key InvoiceNo references Invoice (InvoiceNo)
+Foreign Key TestId references MedicalTest (TestId)
+---
+
+---
+Payment (PaymentId, PaymentDate, PaymentMethod, PaidBy, InvoiceNo)
+
+Primary key PaymentId
+Foreign Key InvoiceNo references Invoice (InvoiceNo)
+Foreign Key PaidBy references Patient (PatientId)
+---

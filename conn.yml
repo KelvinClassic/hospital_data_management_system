@@ -1,0 +1,5 @@
+admin: '<admin_user_name>'
+server: '<server_name>.postgres.database.azure.com'
+dbname: '<database_name>'
+passwd: '<azure_postgres_server_password>'
+port: '5432'
