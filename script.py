@@ -6,10 +6,10 @@ import pandas as pd
 def Connect():
     with open(r'C:\Users\hp\Desktop\Data-Engineering\Hospital_Database_Model_and_Development\conn.yml', 'r') as file:
         config = yaml.safe_load(file)
-        dbname = config['database']
-        user = config['user']
-        password = config['password']
-        host = config['host']
+        dbname = config['dbname']
+        user = config['admin']
+        password = config['passwd']
+        host = config['server']
         port = config['port']
         conn = psycopg2.connect(dbname=dbname, user=user, password=password, host=host, port=port)
     return conn
@@ -188,58 +188,43 @@ def LoadData():
     adminstaff_file_path = r'C:\Users\hp\Desktop\Data-Engineering\Hospital_Database_Model_and_Development\hospital_data_management_system\adminstaff.csv'
     doctor_file_path = r'C:\Users\hp\Desktop\Data-Engineering\Hospital_Database_Model_and_Development\hospital_data_management_system\doctor.csv'
     room_file_path = r'C:\Users\hp\Desktop\Data-Engineering\Hospital_Database_Model_and_Development\hospital_data_management_system\room.csv'
+    with open(staff_file_path, 'r', encoding='utf-8-sig') as staff_file:
+        reader1 = csv.reader(staff_file)
+        # reader = csv.reader(csv_doc)
+        next(reader1)
+        for s in [tuple(row) for row in reader1]:
+            populate_table1 = """
+                                INSERT INTO ChironaSchema.Staff (StaffId, StaffFirstName, StaffLastName, StaffDOB, StaffGender, StaffRole, StaffTelNo, StaffEmail) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"""
+            curr.execute(populate_table1, s)
 
-    with open(r'C:\Users\hp\Desktop\Data-Engineering\Hospital_Database_Model_and_Development\hospital_data_management_system\conn.yml', 'r') as file:
-        config = yaml.safe_load(file)
-        dbname = config['database']
-        user = config['user']
-        password = config['password']
-        host = config['host']
-        port = config['port']
-        conn = psycopg2.connect(dbname=dbname, user=user, password=password, host=host, port=port)
-        curr = conn.cursor()
-        staff_file_path = r'C:\Users\hp\Desktop\Data-Engineering\Hospital_Database_Model_and_Development\hospital_data_management_system\staff.csv'
-        adminstaff_file_path = r'C:\Users\hp\Desktop\Data-Engineering\Hospital_Database_Model_and_Development\hospital_data_management_system\adminstaff.csv'
-        doctor_file_path = r'C:\Users\hp\Desktop\Data-Engineering\Hospital_Database_Model_and_Development\hospital_data_management_system\doctor.csv'
-        room_file_path = r'C:\Users\hp\Desktop\Data-Engineering\Hospital_Database_Model_and_Development\hospital_data_management_system\room.csv'
+    with open(adminstaff_file_path, 'r', encoding='utf-8-sig') as adminstaff_file:
+        reader2 = csv.reader(adminstaff_file)
+        # reader = csv.reader(csv_doc)
+        next(reader2)
+        for a in [tuple(row) for row in reader2]:
+            populate_table2 = """
+                                INSERT INTO ChironaSchema.AdminStaff (AdminId, UserName) VALUES (%s, %s)"""
+            curr.execute(populate_table2, a)
 
-        with open(staff_file_path, 'r', encoding='utf-8-sig') as staff_file:
-            reader1 = csv.reader(staff_file)
-            # reader = csv.reader(csv_doc)
-            next(reader1)
-            for s in [tuple(row) for row in reader1]:
-                populate_table1 = """
-                                    INSERT INTO ChironaSchema.Staff (StaffId, StaffFirstName, StaffLastName, StaffDOB, StaffGender, StaffRole, StaffTelNo, StaffEmail) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"""
-                curr.execute(populate_table1, s)
+    with open(doctor_file_path, 'r', encoding='utf-8-sig') as doctor_file:
+        reader3 = csv.reader(doctor_file)
+        # reader = csv.reader(csv_doc)
+        next(reader3)
+        for d in [tuple(row) for row in reader3]:
+            
+            populate_table3 = """
+                                INSERT INTO ChironaSchema.Doctor (DoctorId, Specialization) VALUES (%s, %s)"""
+            curr.execute(populate_table3, d)
 
-        with open(adminstaff_file_path, 'r', encoding='utf-8-sig') as adminstaff_file:
-            reader2 = csv.reader(adminstaff_file)
-            # reader = csv.reader(csv_doc)
-            next(reader2)
-            for a in [tuple(row) for row in reader2]:
-                populate_table2 = """
-                                    INSERT INTO ChironaSchema.AdminStaff (AdminId, UserName) VALUES (%s, %s)"""
-                curr.execute(populate_table2, a)
-
-        with open(doctor_file_path, 'r', encoding='utf-8-sig') as doctor_file:
-            reader3 = csv.reader(doctor_file)
-            # reader = csv.reader(csv_doc)
-            next(reader3)
-            for d in [tuple(row) for row in reader3]:
-                
-                populate_table3 = """
-                                    INSERT INTO ChironaSchema.Doctor (DoctorId, Specialization) VALUES (%s, %s)"""
-                curr.execute(populate_table3, d)
-
-        with open(room_file_path, 'r', encoding='utf-8-sig') as room_file:
-            reader4 = csv.reader(room_file)
-            # reader = csv.reader(csv_doc)
-            next(reader4)
-            for r in [tuple(row) for row in reader4]:
-                
-                populate_table4 = """
-                                    INSERT INTO ChironaSchema.Room (RoomId, RoomType) VALUES (%s, %s)"""
-                curr.execute(populate_table4, r)
+    with open(room_file_path, 'r', encoding='utf-8-sig') as room_file:
+        reader4 = csv.reader(room_file)
+        # reader = csv.reader(csv_doc)
+        next(reader4)
+        for r in [tuple(row) for row in reader4]:
+            
+            populate_table4 = """
+                                INSERT INTO ChironaSchema.Room (RoomId, RoomType) VALUES (%s, %s)"""
+            curr.execute(populate_table4, r)
     conn.commit()
     curr.close
     conn.close
