@@ -6,6 +6,23 @@ This project provides a centralized, scalable, and relational database system to
 
 ---
 
+## 🔧 Tech Stack & Tools
+
+| Component         | Technology                     |
+|------------------|---------------------------------|
+| **Database**      | PostgreSQL (Hosted on Azure)    |
+| **Cloud Platform**| Azure Database for PostgreSQL   |
+| **Programming**   | Python 3.10+                    |
+| **ORM / DB Driver** | `psycopg2` for PostgreSQL       |
+| **Scripting**     | SQL (DDL inside Python script)  |
+| **Config Mgmt**   | YAML (`conn.yml` for DB creds)  |
+| **Data Handling** | `csv`, `pandas` (for ETL ops)   |
+| **Schema**        | `ChironaSchema` (Logical grouping) |
+| **OS**            | Cross-platform (Linux/Windows)  |
+| **Deployment**    | Manual via script execution     |
+
+---
+
 ## 📌 Problem Statement
 
 The hospital currently lacks a unified system for tracking operational and clinical data. Information silos, manual processes, and fragmented billing are leading to inefficiencies and risks in patient care. This project solves that by introducing a normalized database system that ensures data integrity, real-time access, and cross-departmental visibility.
