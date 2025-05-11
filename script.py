@@ -1,7 +1,6 @@
 import psycopg2
 import yaml
 import csv
-import pandas as pd
 
 def Connect():
     with open(r'C:\Users\hp\Desktop\Data-Engineering\Hospital_Database_Model_and_Development\conn.yml', 'r') as file:
